@@ -9,7 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import { dviDecode } from '@matjp/dvi-decode';
 import opentype from 'opentype.js';
 
-const luaFontPath = 'lua-font-files';
+const luaFontPath = '/dvi-viewer/lua-font-files';
 
 function SelectFileButton(props) {
   const handleChange = (e) => {
