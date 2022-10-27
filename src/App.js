@@ -147,7 +147,7 @@ function App() {
               const words = line.split(':');
               fontMap.set(words[0],words[1]);
           });        
-          dviDecode(dviData, dpi, mag * 10, fontMap, luaFontPath)
+          dviDecode(dviData, dpi, mag * 10, fontMap, luaFontPath, true)
           .then(json => {
             const doc = JSON.parse(json);
             setDoc(doc);
