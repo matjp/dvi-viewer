@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/dvi-viewer/static/css/main.5d546a96.css",
+    "main.js": "/dvi-viewer/static/js/main.fed2d674.js",
+    "index.html": "/dvi-viewer/index.html",
+    "main.5d546a96.css.map": "/dvi-viewer/static/css/main.5d546a96.css.map",
+    "main.fed2d674.js.map": "/dvi-viewer/static/js/main.fed2d674.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5d546a96.css",
+    "static/js/main.fed2d674.js"
+  ]
+}
