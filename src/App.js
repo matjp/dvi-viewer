@@ -10,6 +10,7 @@ import { dviDecode } from '@matjp/dvi-decode';
 import opentype from 'opentype.js';
 
 const luaFontPath = '/dvi-viewer/lua-font-files';
+let firstLoad = true;
 
 function SelectFileButton(props) {
   const handleChange = (e) => {
@@ -138,6 +139,12 @@ function App() {
   }
   
   useEffect( () => {
+    if (firstLoad) {
+      firstLoad = false;
+      fetch('align.dvi').then(res => res.arrayBuffer())
+        .then(ab => setDviData(new Uint8Array(ab)));
+    }
+
     if (dviData)
       fetch('font.map').then(res => res.text())
         .then(text => {
@@ -147,7 +154,7 @@ function App() {
               const words = line.split(':');
               fontMap.set(words[0],words[1]);
           });        
-          dviDecode(dviData, dpi, mag * 10, fontMap, luaFontPath)
+          dviDecode(dviData, dpi, mag * 10, fontMap, luaFontPath, true)
           .then(json => {
             const doc = JSON.parse(json);
             setDoc(doc);
