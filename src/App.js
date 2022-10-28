@@ -20,7 +20,7 @@ function SelectFileButton(props) {
   return (
     <div className='mt-5' >
       <Form.Label>Select a DVI File...</Form.Label>
-      <Form.Control type="file" value="align.dvi" accept=".dvi" onChange={handleChange}></Form.Control>
+      <Form.Control type="file" accept=".dvi" onChange={handleChange}></Form.Control>
     </div>
   );
 }
