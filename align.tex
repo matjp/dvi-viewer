@@ -1,0 +1,219 @@
+\documentclass[a4paper]{article}
+
+\usepackage{amsmath,amsthm}
+\usepackage{unicode-math}
+
+\setmainfont{lmroman10}[
+	Extension = .otf ,
+	UprightFont = *-regular ,
+	BoldFont = *-bold ,
+	ItalicFont = *-italic ,
+	BoldItalicFont = *-bolditalic ,
+	Renderer = OpenType ]
+
+\setmonofont{lmmono10-regular.otf}[
+	Renderer = OpenType	]
+
+\setmathfont{latinmodern-math.otf}[
+	Renderer = OpenType ]
+
+\newcommand{\bs}{$\backslash$}
+\newcommand{\fn}[1]{{\tt #1}}
+\newcommand{\cn}[1]{{\tt \char"5C #1}}
+
+\title{Alignment of formulas}
+\author{Richard Kaye\\School of Mathematics and Statistics\\
+The University of Birmingham\\Birmingham B15 2TT\\U.K.}% If you
+% change the document in any way, put your own name here instead of mine
+\date{12th August 1998}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+One of the most difficult aspects of typesetting mathematics
+is splitting long formulas across several lines and aligning a 
+group of formulas.  Many of these aspects cannot be done
+automatically, and it is up to you to control how this is to done.
+In all cases, your judgement should be based on making the formula
+as readable as possible.
+
+Some control is available using \LaTeX's \fn{eqnarray} and \fn{eqnarray*}
+environments.  However, this command is rather limited for many 
+applications and if you are creating a new document in which you 
+envisage a large number of long formulas or equations I strongly
+recommend you use the AMS packages that are available.
+
+\section{Using the package}
+
+Unless you are using one of the AMS's own class files, you load the package
+by the command \cn{usepackage\{amsmath\}}.  This loads lots of useful new
+commands, including the alignment environments referred to earlier.
+These are:
+\begin{enumerate}
+\item \fn{equation} essentially as usual
+\item \fn{multline} for single equations or formulas going over two 
+or more lines
+\item \fn{split} as for multline, but with extra control over alignment
+\item \fn{gather} for several equations grouped together
+\item \fn{align} for several equations grouped together, with alignment
+\item \fn{alignat} similar to align but with some extra alignment features
+\end{enumerate}
+
+In most cases, there are starred and unstarred versions of these---the
+starred versions do not produce any numbering automatically.  There are
+a few other related commands, such as: the \cn{intertext} command
+which interpolates text without messing up the alignment; the
+\fn{subequations} environment which numbers a groups of equations as 
+\textit{5a}, \textit{5b}, \textit{5c}, etc.; the \fn{cases} environment
+for definitions by cases, and a few other useful things.  I'm not going
+to describe in detail how these commands ae used---you can get
+that from the documentation.  Instead, the next section contains some 
+examples and you can quickly get started by comparing the output with
+the \LaTeX\ source, which is called \fn{align.tex} and can be obtained
+from the usual directory.
+
+\section{Examples}
+
+Many of these examples are directly taken from the documentation of AMS\LaTeX,
+which is recommended reading if further details are required.
+
+Use of \fn{equation*}:
+\begin{equation*}
+a=b
+\end{equation*}
+Use of \fn{equation}:
+\begin{equation}
+a=b
+\end{equation}
+Use of \fn{split} and \fn{equation}:
+\begin{equation}\label{xx}
+\begin{split}
+a& =b+c-d\\
+ & \quad +e-f\\
+ & =g+h\\
+ & =i
+\end{split}
+\end{equation}
+Use of \fn{multline}:
+\begin{multline}
+a+b+c+d+e+f+b+c+d+e+f+b+c+d+e+f\\
++b+c+d+e+f+b+c+d+e+f+i+j+k+l+m+n
+\end{multline}
+Use of \fn{gather}:
+\begin{gather}
+a_1=b_1+c_1\\
+a_2=b_2+c_2-d_2+e_2 \label{eq:D}
+\end{gather}
+Use of \fn{align}:
+\begin{align}
+a_1& =b_1+c_1\\
+a_2& =b_2+c_2-d_2+e_2
+\end{align}
+Other uses for \fn{align}:
+\begin{align}
+a_{11}& =b_{11}&
+  a_{12}& =b_{12}\\
+a_{21}& =b_{21}&
+  a_{22}& =b_{22}+c_{22}
+\end{align}
+Use of \fn{flalign*}:
+\begin{flalign*}
+a_{11}& =b_{11}&
+  a_{12}& =b_{12}\\
+a_{21}& =b_{21}&
+  a_{22}& =b_{22}+c_{22}
+\end{flalign*}
+Use of \cn{equation} and \cn{split}:
+\begin{equation}\label{e:barwq}\begin{split}
+H_c&=\frac{1}{2n} \sum^n_{l=0}(-1)^{l}(n-{l})^{p-2}
+\sum_{l _1+\dots+ l _p=l}\prod^p_{i=1} \binom{n_i}{l _i}\\
+&\quad\cdot[(n-l )-(n_i-l _i)]^{n_i-l _i}\cdot
+\Bigl[(n-l )^2-\sum^p_{j=1}(n_i-l _i)^2\Bigr].
+\end{split}\end{equation}
+Use of \cn{align} to align textual annotations:
+\begin{align}
+x& = y_1-y_2+y_3-y_5+y_8-\dots
+                    && \text{by \eqref{eq:C}}\\
+ & = y'\circ y^*    && \text{by \eqref{eq:D}}\\
+ & = y(0) y'        && \text {by Axiom 1.}
+\end{align}
+Use of \cn{aligned} to control placement of inner alignments:
+\begin{equation*}
+\begin{aligned}
+\alpha&=\alpha\alpha\\
+\beta&=\beta\beta\beta\beta\beta\\
+\gamma&=\gamma
+\end{aligned}
+\qquad\text{versus}\qquad
+\begin{aligned}[t]
+\delta&=\delta\delta\\
+\eta&=\eta\eta\eta\eta\eta\eta\\
+\varphi&=\varphi
+\end{aligned}
+\end{equation*}
+``Cases'' constructions:
+\begin{equation}\label{eq:C}
+P_{r-j}=
+  \begin{cases}
+    0&  \text{if $r-j$ is odd},\\
+    r!\,(-1)^{(r-j)/2}&  \text{if $r-j$ is even}.
+  \end{cases}
+\end{equation}
+Use of \cn{smash} and \cn{vphantom} to control vertical size:
+\newcommand\ip[2]{\langle #1 \/ | #2 \/\rangle}
+\newcommand\Ip[2]{\left\langle{\arraycolsep=0pt %
+         \begin{array}{c|c}#1\/\,&\,#2\/\end{array}}%
+         \right\rangle}
+\newcommand\Ipd[2]{\left\langle{\arraycolsep=0pt %
+         \begin{array}{c|c}\displaystyle#1\/\,&\,\displaystyle#2\/\end{array}}%
+         \right\rangle}
+\newcommand\conj[1]{\overline{#1}}
+\begin{align*}
+\Ipd{ u\: }{\: \smash{\sum_{i=1}^n F(e_i,v) e_i }\vphantom{\sum}}
+&= \sum_{i=1}^n F(e_i,v) \ip{ u }{ e_i } \\ 
+&= \sum_{i=1}^n \ip{ u }{ e_i } F(e_i,v) \\ 
+&= \sum_{i=1}^n \conj{\ip{ e_i }{ u }} F(e_i,v) \\ 
+&= F \biggl( \sum_{i=1}^n \ip{ e_i }{ u } e_i,v\biggr) = F( u, v ),
+\end{align*}
+(Note that without \cn{phantom} and \cn{smash} the brackets would be
+too big because of the limits on the summations.) \cn{phantom} is
+also useful if you are splitting a long equation over two lines and
+you want a large left bracket on one line to match a large right bracket
+on the next:
+\begin{align*}
+x&= \frac{1}{2} \left(\smash{\sum_{i=1}^n F(e_i,v) e_i }\vphantom{\sum}+
+\smash{\sum_{i=1}^n G(e_i,v) e_i} +\smash{\sum_{i=1}^n H(e_i,v) e_i }\vphantom{\sum}+\right.\\[8pt]
+&\phantom{=}\qquad\left.\smash{\sum_{i=1}^n I(e_i,v) e_i }\vphantom{\sum}+
+\smash{\sum_{i=1}^n K(e_i,v) e_i} +
+\smash{\sum_{i=1}^n J(e_i,v) e_i}\vphantom{\sum}\right)
+\end{align*}
+(Note also the adjustment to the vertical spacing in this example.)
+
+Use of \cn{intertext}:
+\begin{proof} (a) Given $\mathbf v$, we have
+\begin{align*}
+1\,\mathbf v &= (-1)(-1)\mathbf v \\
+&=(-1)(-1)\mathbf v +\mathbf 0  \\
+&=(-1)(-1)\mathbf v + (\mathbf v + (-1)\mathbf v) \\
+&=(-1)(-1)\mathbf v + ((-1)\mathbf v + \mathbf v) \\
+&=((-1)(-1)\mathbf v + (-1)\mathbf v) + \mathbf v \\
+&= \mathbf 0+\mathbf v \\
+&= \mathbf v. \\
+\intertext{(b) Again,}
+0\,\mathbf v &= (1+(-1))\mathbf v \\
+&= 1\mathbf v+(-1)\mathbf v\\
+&= \mathbf v+(-1)\mathbf v \\
+&= \mathbf 0.\\
+\intertext{For (c),}
+\lambda \mathbf 0 &= \lambda(\mathbf 0 + (-1)\mathbf 0) \\
+&= \lambda \mathbf 0 + \lambda((-1)\mathbf 0) \\
+&= \lambda \mathbf 0 + (-1)(\lambda \mathbf 0) \\
+&=\mathbf 0 
+\end{align*}
+as required.
+\end{proof}
+
+\end{document}
