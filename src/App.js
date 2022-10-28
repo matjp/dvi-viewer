@@ -1,4 +1,5 @@
 import Container from 'react-bootstrap/Container';
+import Alert from 'react-bootstrap/Alert';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
@@ -11,6 +12,20 @@ import opentype from 'opentype.js';
 
 const luaFontPath = '/dvi-viewer/lua-font-files';
 let firstLoad = true;
+
+function WelcomeAlert(props) {
+  const [show, setShow] = useState(true);
+  if (show) {
+    return (
+      <Alert show={show} variant="info" dismissible onClose={ () => setShow(false)}>
+      <Alert.Heading>DVI Viewer for LuaTeX</Alert.Heading>
+      <p>
+        The file 'align.dvi' was loaded as an example. Download the LaTeX source: <Alert.Link href="./align.tex">align.tex</Alert.Link>
+      </p>
+      </Alert>
+    );
+  }
+}
 
 function SelectFileButton(props) {
   const handleChange = (e) => {
@@ -165,7 +180,8 @@ function App() {
   }, [dviData, dpi, mag] );
 
   return (
-    <Container className=".main_container" fluid>
+    <Container className=".main_container" fluid>    
+      <WelcomeAlert></WelcomeAlert>
       <Row className="main-row">
         <Col className="side-bar" xxl={2}>
           <ButtonGroup className="bg-side" vertical>
