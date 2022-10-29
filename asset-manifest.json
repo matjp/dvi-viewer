@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/dvi-viewer/static/css/main.bf629ca6.css",
-    "main.js": "/dvi-viewer/static/js/main.03fc23ff.js",
+    "main.js": "/dvi-viewer/static/js/main.4b52fa5a.js",
     "index.html": "/dvi-viewer/index.html",
     "main.bf629ca6.css.map": "/dvi-viewer/static/css/main.bf629ca6.css.map",
-    "main.03fc23ff.js.map": "/dvi-viewer/static/js/main.03fc23ff.js.map"
+    "main.4b52fa5a.js.map": "/dvi-viewer/static/js/main.4b52fa5a.js.map"
   },
   "entrypoints": [
     "static/css/main.bf629ca6.css",
-    "static/js/main.03fc23ff.js"
+    "static/js/main.4b52fa5a.js"
   ]
 }
