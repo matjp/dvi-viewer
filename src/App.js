@@ -7,12 +7,18 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
+import Modal from 'react-bootstrap/Modal';
 import { useEffect, useRef, useState } from 'react';
 import { dviDecode } from '@matjp/dvi-decode';
 import opentype from 'opentype.js';
 
 const luaFontPath = '/dvi-viewer/lua-font-files';
 let firstLoad = true;
+let logs = [];
+
+function debugLog(msg){
+  logs.push(msg);
+}
 
 function WelcomeAlert(props) {
   const [show, setShow] = useState(true);
@@ -49,7 +55,7 @@ function InstructionMessage(props) {
       Please ensure each of the following conditions is met when producing your own <code>dvi</code> file.
     </p>
     <ol>
-      <li>Use only OpenType or TrueType fonts.</li>
+      <li>Use only OpenType or TrueType fonts. (<b>Note: This demo supports only the Latin Modern font family</b>).</li>
       <li>
         Use the <code>unicode-math</code> package is used if math symbols are used.
       </li>
@@ -84,7 +90,7 @@ function SelectFileButton(props) {
 
   return (
     <div className='mt-5' >
-      <Form.Label>Select a DVI File...</Form.Label>
+      <Form.Label>{props.selectMsg}</Form.Label>
       <Form.Control type="file" accept=".dvi" onChange={handleChange}></Form.Control>
     </div>
   );
@@ -154,7 +160,36 @@ function enableHighDPICanvas(canvas) {
   }
 }
 
+function LogItem(props) {
+  return <div>{props.value}</div>;
+}
+
+function ModalLog() {
+  const [logShow, setLogShow] = useState(false);
+
+  const handleLogShow = () => setLogShow(true);  
+  const handleLogClose = () => setLogShow(false);
+
+  return (
+    <>
+      <Button variant="primary" onClick={handleLogShow}>
+        Show Log
+      </Button>    
+
+      <Modal size="lg" backdrop="static" show={logShow} onHide={handleLogClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Log Messages</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {logs.map((log, index) => <LogItem key={index} value={log}/>)}
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+}
+
 function App() { 
+  const [debugMode, setDebugMode] = useState(false);
   const [pageWidth, setPageWidth] = useState(8.27); /* in inches (A4 default) */
   const [pageHeight, setPageHeight] = useState(11.69); /* in inches (A4 default) */
   const [dpi, setDpi] = useState(96);
@@ -166,11 +201,14 @@ function App() {
   const [widthPixels, setWidthPixels] = useState(() => { return Math.floor(pageWidth * dpi) });
   const [heightPixels, setHeightPixels] = useState(() => { return Math.floor(pageHeight * dpi) });
   const [marginPixels, setMarginPixels] = useState(() => { return Math.floor(dpi) }); /* 1 inch margin @ default 100% mag */
+  const [selectMsg, setSelectMsg] = useState('Select a DVI File...');
 
+  const onDebugMode = () => setDebugMode(!debugMode);
 
   const onFile = (f) => {
     const reader = new FileReader();
     reader.onload = (evt) => {
+      setSelectMsg('Select a DVI File...Loading...');
       setDviData(new Uint8Array(evt.target.result));
     }
     reader.readAsArrayBuffer(f);
@@ -218,16 +256,22 @@ function App() {
           mapLines.forEach(line => {
               const words = line.split(':');
               fontMap.set(words[0],words[1]);
-          });        
-          dviDecode(dviData, dpi, mag * 10, fontMap, luaFontPath)
+          });       
+          logs = [];
+          dviDecode(dviData, dpi, mag * 10, fontMap, luaFontPath, debugMode, debugLog)
           .then(json => {
             const doc = JSON.parse(json);
             setDoc(doc);
             setPageCount(doc.pages.length);
             setPageNo(1);
+            setSelectMsg('Select a DVI File...Loaded.');
           })
+          .catch((err) => {
+            debugLog(err);
+            setSelectMsg('Select a DVI File...Load error. See log for details.');
+          });
         })
-  }, [dviData, dpi, mag] );
+  }, [dviData, dpi, mag, debugMode] );
 
   return (
     <Container className=".main_container" fluid>    
@@ -238,13 +282,13 @@ function App() {
             <InstructionMessage></InstructionMessage>
           </Accordion.Item>
         </Accordion>
-        <WelcomeAlert></WelcomeAlert>                      
+        <WelcomeAlert/>                    
       </Row>
       <Row className="main-row">
         <Col className="side-bar" xxl={2}>
           <ButtonGroup className="bg-side" vertical>
             <InputGroup className="bg-nav">
-              <SelectFileButton fileEvent={onFile}></SelectFileButton>{' '}
+              <SelectFileButton fileEvent={onFile} selectMsg={selectMsg}></SelectFileButton>{' '}
             </InputGroup>
             <InputGroup>
               <InputGroup.Text id="it-pgsz">Page Size</InputGroup.Text>
@@ -279,16 +323,21 @@ function App() {
             <ButtonGroup>
               <Button onClick={() => { if (pageNo > 1) setPageNo(pageNo-1) }}>Prev Page</Button>
               <Button onClick={() => { if (pageNo < pageCount) setPageNo(pageNo+1) }}>Next Page</Button>
-            </ButtonGroup>              
-          </ButtonGroup>          
+            </ButtonGroup> 
+          </ButtonGroup>
+          <p>&nbsp;</p>
+            <ButtonGroup className="me-2">
+              <ModalLog/>
+            </ButtonGroup>            
+            <Form.Group className="me-2">
+              <Form.Check type="checkbox" label="Debug mode" checked={debugMode} onChange={onDebugMode}/>
+            </Form.Group>
         </Col>
         <Col className="doc">
           <DocumentCanvas
             height={window.innerHeight} doc={doc} pageNo={pageNo} widthPixels={widthPixels} heightPixels={heightPixels} marginPixels={marginPixels}>
           </DocumentCanvas>
         </Col>
-      </Row>
-      <Row className="bottom-row">
       </Row>
     </Container>    
   );
