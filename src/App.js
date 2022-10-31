@@ -79,6 +79,7 @@ function InstructionMessage(props) {
         <code>\documentclass[noamsfonts]{'{amsart}'}</code>
       </li>
     </ol>
+    <div><b>Note that images are not yet supported, just text and rules(lines).</b></div>
     </Accordion.Body>    
   );
 }
