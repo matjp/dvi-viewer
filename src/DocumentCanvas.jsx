@@ -14,7 +14,7 @@ export default function DocumentCanvas(props) {
         if (props.doc) {
           const pageIndex = props.pageNo-1;
           props.doc.pages[pageIndex].rules.forEach(
-            rule => ctx.fillRect(props.marginPixels + rule.x, rule.y, rule.w, rule.h)
+            rule => ctx.fillRect(props.marginPixels + rule.x, props.marginPixels + rule.y, rule.w, rule.h)
           );
           props.doc.pages[pageIndex].pageFonts.forEach(
             async pageFont => {
@@ -26,14 +26,26 @@ export default function DocumentCanvas(props) {
                     let otfGlyph = otfFont.glyphs.get(glyph.glyphIndex);
                     if (otfGlyph)
                       glyph.glyphSizes.forEach(glyphSize =>
-                        glyphSize.glyphPlacements.forEach(glyphPlacement => 
-                          otfGlyph.draw(ctx, props.marginPixels + glyphPlacement.x, glyphPlacement.y, glyphSize.sz, { features: {hinting: true} })
+                        glyphSize.glyphPlacements.forEach(glyphPlacement =>
+                          otfGlyph.draw(ctx, props.marginPixels + glyphPlacement.x, props.marginPixels + glyphPlacement.y, glyphSize.sz, { features: {hinting: true} })
                         )
                       );
                   });
                 }
               }
           });
+          props.doc.pages[pageIndex].images.forEach(
+            async image => {
+              let img = new Image();
+              img.src = image.fileName.replace('.eps','.svg');
+              try {
+                await img.decode();
+                ctx.drawImage(img, props.marginPixels + image.x, props.marginPixels + image.y, image.w, image.h);
+              } catch(err) {
+                console.log(err);
+              }
+            }
+          );
         }
       }
     }, [ctx, props.doc, props.pageNo, props.widthPixels, props.heightPixels, props.marginPixels]);

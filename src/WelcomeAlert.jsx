@@ -7,7 +7,8 @@ export default function WelcomeAlert(props) {
       return (
         <Alert show={show} variant="info" dismissible onClose={ () => setShow(false)}>
         <p>
-          The file 'align.dvi' was loaded as an example. Download the LaTeX source: <Alert.Link href="./align.tex">align.tex</Alert.Link>
+          The file 'intro.dvi' was loaded as an example. Download the LaTeX source: <Alert.Link href="./intro.tex">intro.tex.</Alert.Link>
+          The image files were converted from EPS to SVG and were uploaded to this server.
         </p>
         </Alert>
       );

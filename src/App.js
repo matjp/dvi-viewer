@@ -77,7 +77,7 @@ function App() {
   useEffect( () => {
     if (firstLoad) {
       firstLoad = false;
-      fetch('align.dvi').then(res => res.arrayBuffer())
+      fetch('intro.dvi').then(res => res.arrayBuffer())
         .then(ab => setDviData(new Uint8Array(ab)));
     }
 

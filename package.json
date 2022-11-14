@@ -3,7 +3,7 @@
   "version": "0.2.1",
   "homepage": "https://matjp.github.io/dvi-viewer",
   "dependencies": {
-    "@matjp/dvi-decode": "^0.2.1",
+    "@matjp/dvi-decode": "^0.2.3",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
