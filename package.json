@@ -1,6 +1,6 @@
 {
   "name": "@matjp/dvi-viewer",
-  "version": "0.2.1",
+  "version": "0.2.3",
   "homepage": "https://matjp.github.io/dvi-viewer",
   "dependencies": {
     "@matjp/dvi-decode": "^0.2.3",
