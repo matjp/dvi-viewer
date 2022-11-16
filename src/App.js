@@ -13,7 +13,6 @@ import DocumentCanvas from './DocumentCanvas';
 import ModalLog from './ModalLog';
 import { dviDecode } from '@matjp/dvi-decode';
 
-const luaFontPath = process.env.PUBLIC_URL + '/lua-font-files';
 let firstLoad = true;
 let logs = [];
 
@@ -91,7 +90,7 @@ function App() {
               fontMap.set(words[0], process.env.PUBLIC_URL + words[1]);
           });       
           logs = [];
-          dviDecode(dviData, dpi, mag * 10, fontMap, luaFontPath, debugMode, debugLog)
+          dviDecode(dviData, dpi, mag * 10, fontMap, debugMode, debugLog)
           .then(json => {
             const doc = JSON.parse(json);
             setDoc(doc);
