@@ -26,9 +26,11 @@ export default function DocumentCanvas(props) {
                     let otfGlyph = otfFont.glyphs.get(glyph.glyphIndex);
                     if (otfGlyph)
                       glyph.glyphSizes.forEach(glyphSize =>
-                        glyphSize.glyphPlacements.forEach(glyphPlacement =>
-                          otfGlyph.draw(ctx, props.marginPixels + glyphPlacement.x, props.marginPixels + glyphPlacement.y, glyphSize.sz, { features: {hinting: true} })
-                        )
+                        glyphSize.glyphPlacements.forEach(glyphPlacement => {
+                          const otjsPath = otfGlyph.getPath(props.marginPixels + glyphPlacement.x, props.marginPixels + glyphPlacement.y, glyphSize.sz, { features: {hinting: true} }, otfFont);
+                          const path = new Path2D(otjsPath.toPathData());
+                          ctx.fill(path);
+                        })
                       );
                   });
                 }
